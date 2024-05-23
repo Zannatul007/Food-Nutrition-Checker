@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Classifier</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .upload-options {
+            display: none;
+        }
+
+        .submit-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-preview {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+    <script>
+        function showImageOptions() {
+            document.getElementById('upload-button').style.display = 'none';
+            document.getElementById('image-options').style.display = 'block';
+        }
+
+        function previewImage() {
+            const imageUrlInput = document.getElementById('image_url');
+            const imageFileInput = document.getElementById('image_file');
+            const previewContainer = document.getElementById('image-preview');
+            const previewImage = document.getElementById('preview-image');
+
+            if (imageUrlInput.value) {
+                previewImage.src = imageUrlInput.value;
+                previewContainer.style.display = 'block';
+            } else if (imageFileInput.files && imageFileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImage.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                };
+                reader.readAsDataURL(imageFileInput.files[0]);
+            } else {
+                previewContainer.style.display = 'none';
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Bengali Food Classifier</h1>
+        <div class="row image-container">
+            <div class="col-lg-12">
+                <button type="button" id="upload-button" onclick="showImageOptions()">Upload Your Image and Serving
+                    Size</button>
+                <div class="upload-options" id="image-options">
+                    <form action="/predict" method="post" enctype="multipart/form-data" oninput="previewImage()">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label for="image_url">Enter Image URL:</label>
+                                <input type="text" id="image_url" name="image_url"><br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label for="image_file">Or upload an image:</label>
+                                <input type="file" id="image_file" name="image_file" accept="image/*"><br>
+                            </div>
+                        </div>
+                        <div class="image-preview" id="image-preview" style="display: none;">
+                            <label for="preview-image">Your Uploaded Image</label>
+                            <img id="preview-image" alt="Image Preview">
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label for="serving_size">Enter Serving Size:</label>
+                                <input type="text" id="serving_size" name="serving_size"><br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 submit-container">
+                                <input type="submit" value="Submit">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
