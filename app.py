@@ -133,7 +133,7 @@ def predict():
             predicted_class = model.config.id2label[predicted_class_idx]
             food_info = aggregate_food_info(df, predicted_class, serving_size)
             # Introduce the 10-second delay here
-            time.sleep(10)
+            time.sleep()
 
             return render_template('result.html', predicted_class=predicted_class, food_info=food_info ,serving_size = serving_size,dataset_serving_size=food_info['Dataset Serving Size'])
         else:
